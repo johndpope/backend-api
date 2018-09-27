@@ -1,8 +1,12 @@
 package com.prizeprofile.api.Repository;
 
 import com.prizeprofile.api.Entity.Promoter;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-public interface PromoterRepository extends CrudRepository<Promoter, Integer> {
+@Repository
+@Transactional
+public interface PromoterRepository extends JpaRepository<Promoter, Long> {
     //
 }

@@ -25,13 +25,13 @@ public class PromoterController {
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody Promoter getCompetition(@PathVariable Integer id) {
+    public @ResponseBody Promoter getCompetition(@PathVariable Long id) {
         return promoterRepository.findById(id)
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
     @GetMapping("/{id}/competitions")
-    public @ResponseBody Iterable<Competition> getAllCompetitionsByPromoterId(@PathVariable Integer id,
+    public @ResponseBody Iterable<Competition> getAllCompetitionsByPromoterId(@PathVariable Long id,
                                                                               Pageable pageable) {
         return competitionRepository.findByPromoterId(id, pageable);
     }

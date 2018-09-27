@@ -24,10 +24,10 @@ import java.util.Date;
     @TypeDef(name = "json-node", typeClass = JsonNodeStringType.class),
 })
 @MappedSuperclass
-public class BaseEntity {
+public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     @Column(name = "updated_at", columnDefinition="DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
@@ -41,7 +41,7 @@ public class BaseEntity {
     @JsonIgnore
     private Date createdAt;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
