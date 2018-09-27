@@ -1,21 +1,20 @@
 package com.prizeprofile.api.Enum;
 
 public enum EntryMethod {
-    LIKE("like"),
-    COMMENT("comment"),
-    MENTION("mention"),
-    RETWEET("retweet"),
-    FOLLOW("follow")
+    LIKE,
+    COMMENT,
+    MENTION,
+    RETWEET,
+    FOLLOW
     ;
 
-    private final String method;
+    public static Boolean exists(String method) {
+        try {
+            EntryMethod.valueOf(method.toUpperCase());
 
-    EntryMethod(final String method) {
-        this.method = method;
-    }
-
-    @Override
-    public String toString() {
-        return method;
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

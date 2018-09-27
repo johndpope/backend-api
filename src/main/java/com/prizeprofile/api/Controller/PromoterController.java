@@ -20,8 +20,8 @@ public class PromoterController {
     private CompetitionRepository competitionRepository;
 
     @GetMapping()
-    public @ResponseBody Iterable<Promoter> getAllCompetitions() {
-        return promoterRepository.findAll();
+    public @ResponseBody Iterable<Promoter> getAllCompetitions(Pageable pageable) {
+        return promoterRepository.findAll(pageable);
     }
 
     @GetMapping("/{id}")

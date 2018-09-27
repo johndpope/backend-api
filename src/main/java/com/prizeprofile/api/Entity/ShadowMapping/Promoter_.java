@@ -1,4 +1,6 @@
-package com.prizeprofile.api.Entity;
+package com.prizeprofile.api.Entity.ShadowMapping;
+
+import com.prizeprofile.api.Entity.Promoter;
 
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
