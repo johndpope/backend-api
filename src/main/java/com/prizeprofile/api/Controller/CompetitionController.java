@@ -18,7 +18,6 @@ public class CompetitionController {
     @GetMapping
     public @ResponseBody Iterable<Competition> getAllCompetitions(Pageable pageable,
                                                                   @ModelAttribute CompetitionSearchCriteria search) {
-        System.out.println(search);
         CompetitionSpecification spec = new CompetitionSpecification(search);
 
         return competitionRepository.findAll(spec, pageable);

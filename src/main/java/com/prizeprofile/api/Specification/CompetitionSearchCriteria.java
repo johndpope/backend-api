@@ -7,7 +7,7 @@ public class CompetitionSearchCriteria {
 
     private String entryMethods;
 
-    private Boolean onlyPastDay;
+    private Boolean onlyRecent;
 
     private String pattern;
 
@@ -35,12 +35,12 @@ public class CompetitionSearchCriteria {
         this.entryMethods = entryMethods;
     }
 
-    public Boolean getOnlyPastDay() {
-        return onlyPastDay;
+    public Boolean getOnlyRecent() {
+        return onlyRecent;
     }
 
-    public void setOnlyPastDay(Boolean onlyPastDay) {
-        this.onlyPastDay = onlyPastDay;
+    public void setOnlyRecent(Boolean onlyRecent) {
+        this.onlyRecent = onlyRecent;
     }
 
     public String getPattern() {

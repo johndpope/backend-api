@@ -2,9 +2,9 @@ package com.prizeprofile.api.Specification;
 
 
 import com.prizeprofile.api.Entity.Competition;
-import com.prizeprofile.api.Entity.ShadowMapping.Competition_;
+import com.prizeprofile.api.Entity.Competition_;
 import com.prizeprofile.api.Entity.Promoter;
-import com.prizeprofile.api.Entity.ShadowMapping.Promoter_;
+import com.prizeprofile.api.Entity.Promoter_;
 import com.prizeprofile.api.Enum.EntryMethod;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class CompetitionSpecification implements Specification<Competition> {
     private CompetitionSearchCriteria criteria;
@@ -38,23 +39,42 @@ public class CompetitionSpecification implements Specification<Competition> {
 
         final List<Predicate> predicates = new ArrayList<>();
         {
-            // onlyPastDay(predicates);
-            // findPattern(predicates);
-            isVerified(predicates);
-            // limitEntrants(predicates);
-            //filterMethods(predicates);
+            onlyValidSource(predicates);
+            onlyVerified(predicates);
+            onlyRecent(predicates);
+            limitEntrants(predicates);
+            filterPattern(predicates);
+            filterMethods(predicates);
         }
 
         return builder.and(predicates.toArray(new Predicate[predicates.size()]));
     }
 
-    private void isVerified(List<Predicate> predicates) {
+    /**
+     * Filters out competitions that are not verified nor have enough retweets.
+     *
+     * @param predicates Holds the query shards.
+     */
+    private void onlyValidSource(List<Predicate> predicates) {
+        Path<Boolean> verified = promoter.get(Promoter_.verified);
+        Path<Integer> entrants = root.get(Competition_.retweets);
+
+        predicates.add(builder.or(builder.isTrue(verified), builder.greaterThan(entrants, 50)));
+    }
+
+    private void onlyVerified(List<Predicate> predicates) {
         if (criteria.getOnlyVerified() != null && criteria.getOnlyVerified()) {
             Path<Boolean> verified = promoter.get(Promoter_.verified);
             predicates.add(builder.isTrue(verified));
         }
     }
 
+    /**
+     * Filters competitions based on entrants.
+     * TODO: Change to minEntrants and maxEntrants.
+     *
+     * @param predicates Holds the query shards.
+     */
     private void limitEntrants(List<Predicate> predicates) {
         if (criteria.getEntrants() != null) {
             Path<Integer> entrants = root.get(Competition_.retweets);
@@ -66,31 +86,57 @@ public class CompetitionSpecification implements Specification<Competition> {
         }
     }
 
+    /**
+     * Filters competitions based on entry methods.
+     * TODO: Refactor as this approach is extremly slow.
+     *
+     * @param predicates Holds the query shards.
+     */
     private void filterMethods(List<Predicate> predicates) {
         if (criteria.getEntryMethods() != null) {
-            Path<String> methods = root.get("entry_methods");
+            Path<String> methods = root.get("entryMethods");
             String[] requestedMethods = criteria.getEntryMethods().split(",");
 
             Arrays.stream(requestedMethods)
-                    .filter(EntryMethod::exists)
-                    .forEach(method -> predicates.add(builder.like(methods, method)));
+                .filter(EntryMethod::exists)
+                .forEach((method) -> {
+                    predicates.add(builder.greaterThan(builder.locate(methods, method), 0));
+                });
         }
     }
 
-    /*private void onlyPastDay(List<Predicate> predicates) {
-        if (criteria.getOnlyPastDay() != null) {
+    /**
+     * Shows only competitions from last 24 hours.
+     *
+     * @param predicates Holds the query shards.
+     */
+    private void onlyRecent(List<Predicate> predicates) {
+        if (criteria.getOnlyRecent() != null) {
             Date date = java.sql.Date.valueOf(LocalDate.now().minusDays(1));
             Path<Date> verified = root.get(Competition_.posted);
 
             predicates.add(builder.greaterThanOrEqualTo(verified, date));
         }
-    }*/
+    }
 
-    private void findPattern(List<Predicate> predicates) {
+    /**
+     * Fulltext search.
+     * TODO: Refactor case insensitive search.
+     *
+     * @param predicates Holds the query shards.
+     */
+    private void filterPattern(List<Predicate> predicates) {
         if (criteria.getPattern() != null) {
+            String pattern = criteria.getPattern().toLowerCase();
             Path<String> text = root.get(Competition_.text);
+            Path<String> screenName = promoter.get(Promoter_.screenName);
+            Path<String> name = promoter.get(Promoter_.name);
 
-            predicates.add(builder.like(text, "%" + criteria.getPattern() + "%"));
+            predicates.add(builder.or(
+                    builder.like(builder.lower(text), "%" + pattern + "%"),
+                    builder.like(builder.lower(screenName), "%" + pattern + "%"),
+                    builder.like(builder.lower(name), "%" + pattern + "%")
+            ));
         }
     }
 }

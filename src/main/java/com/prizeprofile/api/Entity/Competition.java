@@ -23,8 +23,8 @@ public class Competition extends BaseEntity {
     @JsonProperty("end_date")
     private Date endDate;
 
-    @Type(type = "jsonb")
-    @Column(name = "entry_methods", columnDefinition = "jsonb")
+    @Type(type = "json")
+    @Column(name = "entry_methods", columnDefinition = "json")
     @JsonProperty("entry_methods")
     private List<String> entryMethods;
 

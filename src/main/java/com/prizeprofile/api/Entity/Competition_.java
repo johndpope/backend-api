@@ -1,7 +1,4 @@
-package com.prizeprofile.api.Entity.ShadowMapping;
-
-import com.prizeprofile.api.Entity.Competition;
-import com.prizeprofile.api.Entity.Promoter;
+package com.prizeprofile.api.Entity;
 
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
@@ -13,7 +10,7 @@ public class Competition_ {
 
     public static volatile SingularAttribute<Competition, Integer> retweets;
 
-    // public static volatile SingularAttribute<Competition, Date> posted;
+    public static volatile SingularAttribute<Competition, Date> posted;
 
     public static volatile SingularAttribute<Competition, String> text;
 }
