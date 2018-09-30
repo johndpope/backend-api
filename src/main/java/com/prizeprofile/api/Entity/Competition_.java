@@ -12,5 +12,7 @@ public class Competition_ {
 
     public static volatile SingularAttribute<Competition, Date> posted;
 
+    public static volatile SingularAttribute<Competition, Date> endDate;
+
     public static volatile SingularAttribute<Competition, String> text;
 }
