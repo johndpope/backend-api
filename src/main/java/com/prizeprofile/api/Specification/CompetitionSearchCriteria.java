@@ -1,7 +1,9 @@
 package com.prizeprofile.api.Specification;
 
 public class CompetitionSearchCriteria {
-    private Integer entrants;
+    private Integer minEntrants;
+
+    private Integer maxEntrants;
 
     private Boolean onlyVerified;
 
@@ -11,12 +13,20 @@ public class CompetitionSearchCriteria {
 
     private String pattern;
 
-    public Integer getEntrants() {
-        return entrants;
+    public Integer getMinEntrants() {
+        return minEntrants;
     }
 
-    public void setEntrants(Integer entrants) {
-        this.entrants = entrants;
+    public void setMinEntrants(Integer minEntrants) {
+        this.minEntrants = minEntrants;
+    }
+
+    public Integer getMaxEntrants() {
+        return maxEntrants;
+    }
+
+    public void setMaxEntrants(Integer maxEntrants) {
+        this.maxEntrants = maxEntrants;
     }
 
     public Boolean getOnlyVerified() {

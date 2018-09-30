@@ -5,6 +5,8 @@ import com.prizeprofile.api.Entity.Promoter;
 import com.prizeprofile.api.Exception.ResourceNotFoundException;
 import com.prizeprofile.api.Repository.CompetitionRepository;
 import com.prizeprofile.api.Repository.PromoterRepository;
+import com.prizeprofile.api.Specification.CompetitionSearchCriteria;
+import com.prizeprofile.api.Specification.CompetitionSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -32,7 +34,10 @@ public class PromoterController {
 
     @GetMapping("/{id}/competitions")
     public @ResponseBody Iterable<Competition> getAllCompetitionsByPromoterId(@PathVariable Long id,
-                                                                              Pageable pageable) {
-        return competitionRepository.findByPromoterId(id, pageable);
+                                                                              Pageable pageable,
+                                                                              @ModelAttribute CompetitionSearchCriteria search) {
+        CompetitionSpecification spec = new CompetitionSpecification(search);
+
+        return competitionRepository.findByPromoterId(id, spec, pageable);
     }
 }

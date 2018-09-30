@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class CompetitionSpecification implements Specification<Competition> {
     private CompetitionSearchCriteria criteria;
@@ -39,27 +38,34 @@ public class CompetitionSpecification implements Specification<Competition> {
 
         final List<Predicate> predicates = new ArrayList<>();
         {
-            onlyValidSource(predicates);
             onlyVerified(predicates);
+            minEntrants(predicates);
+            maxEntrants(predicates);
             onlyRecent(predicates);
-            limitEntrants(predicates);
-            filterPattern(predicates);
+            onlyActive(predicates);
             filterMethods(predicates);
+            filterPattern(predicates);
         }
 
         return builder.and(predicates.toArray(new Predicate[predicates.size()]));
     }
 
     /**
-     * Filters out competitions that are not verified nor have enough retweets.
+     * Filters out competitions that are most likely still active.
      *
      * @param predicates Holds the query shards.
      */
-    private void onlyValidSource(List<Predicate> predicates) {
-        Path<Boolean> verified = promoter.get(Promoter_.verified);
-        Path<Integer> entrants = root.get(Competition_.retweets);
+    private void onlyActive(List<Predicate> predicates) {
+        Date postedFrom = java.sql.Date.valueOf(LocalDate.now().minusDays(5));
+        Date endingFrom = java.sql.Date.valueOf(LocalDate.now().minusDays(1));
 
-        predicates.add(builder.or(builder.isTrue(verified), builder.greaterThan(entrants, 50)));
+        Path<Date> posted = root.get(Competition_.posted);
+        Path<Date> ending = root.get(Competition_.endDate);
+
+        predicates.add(builder.or(
+            builder.greaterThanOrEqualTo(posted, postedFrom),
+            builder.greaterThanOrEqualTo(ending, endingFrom)
+        ));
     }
 
     private void onlyVerified(List<Predicate> predicates) {
@@ -71,24 +77,37 @@ public class CompetitionSpecification implements Specification<Competition> {
 
     /**
      * Filters competitions based on entrants.
-     * TODO: Change to minEntrants and maxEntrants.
      *
      * @param predicates Holds the query shards.
      */
-    private void limitEntrants(List<Predicate> predicates) {
-        if (criteria.getEntrants() != null) {
-            Path<Integer> entrants = root.get(Competition_.retweets);
-            Integer entrantsLimit = criteria.getEntrants();
+    private void maxEntrants(List<Predicate> predicates) {
+        Integer maxEntrants = criteria.getMaxEntrants();
 
-            predicates.add(entrantsLimit > 999
-                    ? builder.greaterThan(entrants, entrantsLimit)
-                    : builder.lessThan(entrants, entrantsLimit));
+        if (maxEntrants != null) {
+            Path<Integer> entrants = root.get(Competition_.retweets);
+
+            predicates.add(builder.lessThan(entrants, maxEntrants));
+        }
+    }
+
+    /**
+     * Filters competitions based on entrants.
+     *
+     * @param predicates Holds the query shards.
+     */
+    private void minEntrants(List<Predicate> predicates) {
+        Integer minEntrants = criteria.getMinEntrants();
+
+        if (minEntrants != null) {
+            Path<Integer> entrants = root.get(Competition_.retweets);
+
+            predicates.add(builder.greaterThanOrEqualTo(entrants, minEntrants));
         }
     }
 
     /**
      * Filters competitions based on entry methods.
-     * TODO: Refactor as this approach is extremly slow.
+     * TODO: Refactor as this approach is slow.
      *
      * @param predicates Holds the query shards.
      */
@@ -113,9 +132,9 @@ public class CompetitionSpecification implements Specification<Competition> {
     private void onlyRecent(List<Predicate> predicates) {
         if (criteria.getOnlyRecent() != null) {
             Date date = java.sql.Date.valueOf(LocalDate.now().minusDays(1));
-            Path<Date> verified = root.get(Competition_.posted);
+            Path<Date> posted = root.get(Competition_.posted);
 
-            predicates.add(builder.greaterThanOrEqualTo(verified, date));
+            predicates.add(builder.greaterThanOrEqualTo(posted, date));
         }
     }
 
@@ -133,9 +152,9 @@ public class CompetitionSpecification implements Specification<Competition> {
             Path<String> name = promoter.get(Promoter_.name);
 
             predicates.add(builder.or(
-                    builder.like(builder.lower(text), "%" + pattern + "%"),
-                    builder.like(builder.lower(screenName), "%" + pattern + "%"),
-                    builder.like(builder.lower(name), "%" + pattern + "%")
+                builder.like(builder.lower(text), "%" + pattern + "%"),
+                builder.like(builder.lower(screenName), "%" + pattern + "%"),
+                builder.like(builder.lower(name), "%" + pattern + "%")
             ));
         }
     }
