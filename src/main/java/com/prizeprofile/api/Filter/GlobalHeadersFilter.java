@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class CacheHeaderFilter implements Filter {
+public class GlobalHeadersFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -22,6 +22,7 @@ public class CacheHeaderFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         httpServletResponse.setHeader("Cache-Control", "max-age: 300");
+        httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
         chain.doFilter(request, response);
     }
 
