@@ -7,6 +7,8 @@ import com.prizeprofile.api.Specification.CompetitionSpecification;
 import com.prizeprofile.api.Specification.CompetitionSearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,8 +18,11 @@ public class CompetitionController {
     private CompetitionRepository competitionRepository;
 
     @GetMapping
-    public @ResponseBody Iterable<Competition> getAllCompetitions(Pageable pageable,
-                                                                  @ModelAttribute CompetitionSearchCriteria search) {
+    public @ResponseBody Iterable<Competition> getAllCompetitions(
+        @SortDefault.SortDefaults({
+                @SortDefault(sort = "posted", direction = Sort.Direction.DESC)
+        }) Pageable pageable,
+        @ModelAttribute CompetitionSearchCriteria search) {
         CompetitionSpecification spec = new CompetitionSpecification(search);
 
         return competitionRepository.findAll(spec, pageable);

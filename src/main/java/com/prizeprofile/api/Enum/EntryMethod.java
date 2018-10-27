@@ -3,7 +3,7 @@ package com.prizeprofile.api.Enum;
 public enum EntryMethod {
     LIKE,
     COMMENT,
-    MENTION,
+    FRIEND,
     RETWEET,
     FOLLOW
     ;

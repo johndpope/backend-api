@@ -83,7 +83,7 @@ public class CompetitionSpecification implements Specification<Competition> {
     private void maxEntrants(List<Predicate> predicates) {
         Integer maxEntrants = criteria.getMaxEntrants();
 
-        if (maxEntrants != null) {
+        if (maxEntrants != null && maxEntrants > 0) {
             Path<Integer> entrants = root.get(Competition_.retweets);
 
             predicates.add(builder.lessThan(entrants, maxEntrants));
@@ -98,7 +98,7 @@ public class CompetitionSpecification implements Specification<Competition> {
     private void minEntrants(List<Predicate> predicates) {
         Integer minEntrants = criteria.getMinEntrants();
 
-        if (minEntrants != null) {
+        if (minEntrants != null && minEntrants > 0) {
             Path<Integer> entrants = root.get(Competition_.retweets);
 
             predicates.add(builder.greaterThanOrEqualTo(entrants, minEntrants));
@@ -118,9 +118,7 @@ public class CompetitionSpecification implements Specification<Competition> {
 
             Arrays.stream(requestedMethods)
                 .filter(EntryMethod::exists)
-                .forEach((method) -> {
-                    predicates.add(builder.greaterThan(builder.locate(methods, method), 0));
-                });
+                .forEach(method -> predicates.add(builder.greaterThan(builder.locate(methods, method), 0)));
         }
     }
 
