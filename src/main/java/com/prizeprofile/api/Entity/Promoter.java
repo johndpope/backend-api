@@ -8,9 +8,9 @@ import java.util.Set;
 @Entity
 @Table(name = "promoters")
 public class Promoter extends BaseEntity {
-    @Column(name = "twitter_id")
-    @JsonProperty("twitter_id")
-    private String twitterId;
+    @Column(name = "resource_id")
+    @JsonProperty("resource_id")
+    private String resourceId;
 
     @Column(name = "screen_name")
     @JsonProperty("screen_name")
@@ -21,7 +21,7 @@ public class Promoter extends BaseEntity {
             fetch = FetchType.LAZY,
             mappedBy = "promoter"
     )
-    private Set<Competition> competition;
+    private Set<Competition> competitions;
 
     private String thumbnail;
 
@@ -33,8 +33,10 @@ public class Promoter extends BaseEntity {
 
     private String description;
 
-    public String getTwitterId() {
-        return twitterId;
+    private String homepage;
+
+    public String getReourceId() {
+        return resourceId;
     }
 
     public String getScreenName() {
@@ -59,5 +61,9 @@ public class Promoter extends BaseEntity {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getHomepage() {
+        return homepage;
     }
 }

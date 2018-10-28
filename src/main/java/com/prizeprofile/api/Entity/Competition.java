@@ -10,9 +10,9 @@ import java.util.List;
 @Entity
 @Table(name = "competitions")
 public class Competition extends BaseEntity {
-    @Column(name = "tweet_id")
-    @JsonProperty("tweet_id")
-    private String tweetId;
+    @Column(name = "resource_id")
+    @JsonProperty("resource_id")
+    private String resourceId;
 
     @Column(columnDefinition="DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
@@ -36,14 +36,10 @@ public class Competition extends BaseEntity {
 
     private String preview;
 
-    private Integer retweets;
+    private Integer entrants;
 
-    private Integer favorites;
-
-    private Integer comments;
-
-    public String getTweetId() {
-        return tweetId;
+    public String getResourceId() {
+        return resourceId;
     }
 
     public Date getPosted() {
@@ -70,15 +66,7 @@ public class Competition extends BaseEntity {
         return preview;
     }
 
-    public Integer getRetweets() {
-        return retweets;
-    }
-
-    public Integer getFavorites() {
-        return favorites;
-    }
-
-    public Integer getComments() {
-        return comments;
+    public Integer getEntrants() {
+        return entrants;
     }
 }

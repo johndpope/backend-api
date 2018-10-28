@@ -84,7 +84,7 @@ public class CompetitionSpecification implements Specification<Competition> {
         Integer maxEntrants = criteria.getMaxEntrants();
 
         if (maxEntrants != null && maxEntrants > 0) {
-            Path<Integer> entrants = root.get(Competition_.retweets);
+            Path<Integer> entrants = root.get(Competition_.entrants);
 
             predicates.add(builder.lessThan(entrants, maxEntrants));
         }
@@ -99,7 +99,7 @@ public class CompetitionSpecification implements Specification<Competition> {
         Integer minEntrants = criteria.getMinEntrants();
 
         if (minEntrants != null && minEntrants > 0) {
-            Path<Integer> entrants = root.get(Competition_.retweets);
+            Path<Integer> entrants = root.get(Competition_.entrants);
 
             predicates.add(builder.greaterThanOrEqualTo(entrants, minEntrants));
         }

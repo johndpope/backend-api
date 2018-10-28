@@ -8,7 +8,7 @@ import java.util.Date;
 public class Competition_ {
     public static volatile SingularAttribute<Competition, Promoter> promoter;
 
-    public static volatile SingularAttribute<Competition, Integer> retweets;
+    public static volatile SingularAttribute<Competition, Integer> entrants;
 
     public static volatile SingularAttribute<Competition, Date> posted;
 
