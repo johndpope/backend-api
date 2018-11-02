@@ -56,16 +56,9 @@ public class CompetitionSpecification implements Specification<Competition> {
      * @param predicates Holds the query shards.
      */
     private void onlyActive(List<Predicate> predicates) {
-        Date postedFrom = java.sql.Date.valueOf(LocalDate.now().minusDays(5));
-        Date endingFrom = java.sql.Date.valueOf(LocalDate.now().minusDays(1));
-
-        Path<Date> posted = root.get(Competition_.posted);
         Path<Date> ending = root.get(Competition_.endDate);
 
-        predicates.add(builder.or(
-            builder.greaterThanOrEqualTo(posted, postedFrom),
-            builder.greaterThanOrEqualTo(ending, endingFrom)
-        ));
+        predicates.add(builder.greaterThan(ending, new Date()));
     }
 
     private void onlyVerified(List<Predicate> predicates) {
