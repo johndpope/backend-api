@@ -28,6 +28,11 @@ public class Competition extends BaseEntity {
     @JsonProperty("entry_methods")
     private List<String> entryMethods;
 
+    @Column(columnDefinition="DATETIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonProperty("created_at")
+    private Date createdAt;
+
     @ManyToOne
     @JoinColumn(name = "promoter_id")
     private Promoter promoter;
@@ -48,6 +53,10 @@ public class Competition extends BaseEntity {
 
     public Date getEndDate() {
         return endDate;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
     public List<String> getEntryMethods() {
