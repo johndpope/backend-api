@@ -1,17 +1,29 @@
 package com.prizeprofile.api.Specification;
 
 public class CompetitionSearchCriteria {
+    private Integer sourceId;
+
     private Integer minEntrants;
 
     private Integer maxEntrants;
 
     private Boolean onlyVerified;
 
+    private Boolean notGaming;
+
     private String entryMethods;
 
     private Boolean onlyRecent;
 
     private String pattern;
+
+    public Integer getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(Integer sourceId) {
+        this.sourceId = sourceId;
+    }
 
     public Integer getMinEntrants() {
         return minEntrants;
@@ -35,6 +47,14 @@ public class CompetitionSearchCriteria {
 
     public void setOnlyVerified(Boolean verified) {
         this.onlyVerified = verified;
+    }
+
+    public Boolean getNotGaming() {
+        return notGaming;
+    }
+
+    public void setNotGaming(Boolean notGaming) {
+        this.notGaming = notGaming;
     }
 
     public String getEntryMethods() {

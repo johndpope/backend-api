@@ -5,7 +5,10 @@ public enum EntryMethod {
     COMMENT,
     FRIEND,
     RETWEET,
-    FOLLOW
+    FOLLOW,
+    TWITCHTV_FOLLOW,
+    TWITCHTV_SUBSCRIBE,
+    DISCORD_JOIN_SERVER
     ;
 
     public static Boolean exists(String method) {
@@ -16,5 +19,9 @@ public enum EntryMethod {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public String toString() {
+        return this.name().toLowerCase();
     }
 }

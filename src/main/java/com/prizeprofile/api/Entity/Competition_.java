@@ -6,6 +6,10 @@ import java.util.Date;
 
 @StaticMetamodel(Competition.class)
 public class Competition_ {
+    public static volatile SingularAttribute<Competition, Integer> sourceId;
+
+    public static volatile SingularAttribute<Competition, Integer> regionId;
+
     public static volatile SingularAttribute<Competition, Promoter> promoter;
 
     public static volatile SingularAttribute<Competition, Integer> entrants;

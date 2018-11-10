@@ -14,6 +14,14 @@ public class Competition extends BaseEntity {
     @JsonProperty("resource_id")
     private String resourceId;
 
+    @Column(name = "source_id")
+    @JsonProperty("source_id")
+    private Integer sourceId;
+
+    @Column(name = "region_id")
+    @JsonProperty("region_id")
+    private Integer regionId;
+
     @Column(columnDefinition="DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date posted;
@@ -45,6 +53,14 @@ public class Competition extends BaseEntity {
 
     public String getResourceId() {
         return resourceId;
+    }
+
+    public Integer getSourceId() {
+        return sourceId;
+    }
+
+    public Integer getRegionId() {
+        return regionId;
     }
 
     public Date getPosted() {
