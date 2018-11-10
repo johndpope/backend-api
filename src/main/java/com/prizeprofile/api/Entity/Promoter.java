@@ -35,7 +35,7 @@ public class Promoter extends BaseEntity {
 
     private String homepage;
 
-    public String getReourceId() {
+    public String getResourceId() {
         return resourceId;
     }
 
