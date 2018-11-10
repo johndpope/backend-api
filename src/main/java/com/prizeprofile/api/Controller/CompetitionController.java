@@ -20,7 +20,7 @@ public class CompetitionController {
     @GetMapping
     public @ResponseBody Iterable<Competition> getAllCompetitions(
         @SortDefault.SortDefaults({
-                @SortDefault(sort = "posted", direction = Sort.Direction.DESC)
+                @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC)
         }) Pageable pageable,
         @ModelAttribute CompetitionSearchCriteria search) {
         CompetitionSpecification spec = new CompetitionSpecification(search);
