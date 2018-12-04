@@ -171,9 +171,9 @@ public class CompetitionSpecification implements Specification<Competition> {
     private void onlyRecent(List<Predicate> predicates) {
         if (criteria.getOnlyRecent() != null) {
             Date date = java.sql.Date.valueOf(LocalDate.now().minusDays(1));
-            Path<Date> posted = root.get(Competition_.posted);
+            Path<Date> createdAt = root.get(Competition_.createdAt);
 
-            predicates.add(builder.greaterThanOrEqualTo(posted, date));
+            predicates.add(builder.greaterThanOrEqualTo(createdAt, date));
         }
     }
 

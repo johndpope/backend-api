@@ -5,7 +5,7 @@
 
 	<groupId>com.prizeprofile</groupId>
 	<artifactId>api</artifactId>
-	<version>1.0.10-SNAPSHOT</version>
+	<version>1.0.11-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>prizeprofile-api</name>
