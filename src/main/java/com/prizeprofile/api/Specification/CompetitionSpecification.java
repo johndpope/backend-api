@@ -169,7 +169,7 @@ public class CompetitionSpecification implements Specification<Competition> {
      * @param predicates Holds the query shards.
      */
     private void onlyRecent(List<Predicate> predicates) {
-        if (criteria.getOnlyRecent() != null) {
+        if (criteria.getOnlyRecent() != null && criteria.getOnlyRecent()) {
             Date date = java.sql.Date.valueOf(LocalDate.now().minusDays(1));
             Path<Date> createdAt = root.get(Competition_.createdAt);
 

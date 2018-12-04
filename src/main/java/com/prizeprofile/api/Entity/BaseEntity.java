@@ -1,6 +1,7 @@
 package com.prizeprofile.api.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vladmihalcea.hibernate.type.array.IntArrayType;
 import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
@@ -27,19 +28,19 @@ import java.util.Date;
 public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    protected Long id;
 
     @Column(name = "updated_at", columnDefinition="DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     @JsonIgnore
-    private Date updatedAt;
+    protected Date updatedAt;
 
-    @Column(name = "created_at", columnDefinition="DATETIME")
+    @Column(columnDefinition="DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonProperty("created_at")
     @CreatedDate
-    @JsonIgnore
-    private Date createdAt;
+    protected Date createdAt;
 
     public Long getId() {
         return id;
